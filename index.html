@@ -1,44 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Punto Notifications</title>
 
+
   <style>
+
     body {
+
       font-family: Arial, sans-serif;
+
       text-align: center;
+
       padding: 40px 20px;
+
     }
 
+
     button {
+
       padding: 15px 25px;
+
       font-size: 18px;
+
       border: none;
+
       border-radius: 10px;
+
       cursor: pointer;
+
     }
+
+
+    #status {
+
+      white-space: pre-wrap;
+
+      word-break: break-all;
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
   <h1>🔔 PUNTO</h1>
 
+
   <p id="status">
     Préparation des notifications...
   </p>
 
-  <button id="notificationButton" style="display:none;">
+
+  <button
+    id="notificationButton"
+    style="display:none;"
+  >
+
     🔔 Activer les notifications
+
   </button>
+
 
   <script type="module">
 
-    import { initializeApp } 
-      from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      initializeApp
+    }
+    from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
 
     import {
       getMessaging,
@@ -47,22 +90,36 @@
     from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
 
 
+    // =========================
+    // CONFIGURATION FIREBASE
+    // =========================
+
     const firebaseConfig = {
 
-      apiKey: "AIzaSyBBns9DypiTjuP4HUGzsxQlXcDZT4_IeeA",
+      apiKey:
+        "AIzaSyBBns9DypiTjuP4HUGzsxQlXcDZT4_IeeA",
 
-      authDomain: "punto-156fa.firebaseapp.com",
+      authDomain:
+        "punto-156fa.firebaseapp.com",
 
-      projectId: "punto-156fa",
+      projectId:
+        "punto-156fa",
 
-      storageBucket: "punto-156fa.firebasestorage.app",
+      storageBucket:
+        "punto-156fa.firebasestorage.app",
 
-      messagingSenderId: "186145579226",
+      messagingSenderId:
+        "186145579226",
 
-      appId: "1:186145579226:web:ef61540d0d477fc03905e3"
+      appId:
+        "1:186145579226:web:ef61540d0d477fc03905e3"
 
     };
 
+
+    // =========================
+    // INITIALISATION FIREBASE
+    // =========================
 
     const app =
       initializeApp(firebaseConfig);
@@ -72,6 +129,10 @@
       getMessaging(app);
 
 
+    // =========================
+    // ELEMENTS DE LA PAGE
+    // =========================
+
     const status =
       document.getElementById("status");
 
@@ -79,6 +140,10 @@
     const button =
       document.getElementById("notificationButton");
 
+
+    // =========================
+    // FIREBASE CHARGE
+    // =========================
 
     status.innerText =
       "Firebase est chargé.";
@@ -88,10 +153,18 @@
       "inline-block";
 
 
+    // =========================
+    // ACTIVATION DES NOTIFICATIONS
+    // =========================
+
     button.onclick =
       async function() {
 
         try {
+
+
+          // Demande l'autorisation
+          // d'envoyer des notifications
 
           const permission =
             await Notification.requestPermission();
@@ -109,24 +182,37 @@
           }
 
 
+          // =========================
+          // SERVICE WORKER
+          // =========================
+
           const registration =
             await navigator.serviceWorker.register(
               "./firebase-messaging-sw.js"
             );
 
 
+          // =========================
+          // RECUPERATION DU TOKEN
+          // =========================
+
           const token =
             await getToken(
               messaging,
               {
+
                 vapidKey:
                   "BCAzqNHeCd7_Muj0UEicTy76U3Gi51bP_Zv8vuoTZ8ilrIkJee1YJMYzq3pnU8EoF3fkh4V-jKT1njo4l0MXqC0",
 
                 serviceWorkerRegistration:
                   registration
+
               }
             );
 
+
+          // Affichage dans la console
+          // (utile pour le débogage)
 
           console.log(
             "TOKEN FIREBASE :",
@@ -134,23 +220,39 @@
           );
 
 
+          // =========================
+          // AFFICHAGE DU TOKEN
+          // =========================
+
           status.innerText =
-            "✅ Notifications activées !";
+            "✅ Notifications activées !"
+            +
+            "\n\nTOKEN FIREBASE :\n"
+            +
+            token;
 
 
-        } catch (error) {
+        }
+
+        catch (error) {
+
 
           console.error(error);
 
+
           status.innerText =
-            "❌ Erreur : " +
+            "❌ Erreur : "
+            +
             error.message;
+
 
         }
 
       };
 
+
   </script>
 
 </body>
+
 </html>
