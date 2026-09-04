@@ -73,7 +73,7 @@ self.addEventListener(
 
 
     const urlPunto =
-      "https://script.google.com/macros/s/AKfycbxm3XrvbyKNKSv0mN__fHVx_9-fK3awqJOTPq45EkS2SCyP4CX87lO31brEHNilH2do/exec";
+      "https://script.google.com/macros/s/AKfycbyqcyq-PnFwWFAEFGc_212_M169btNM5OaSXHT_N7XkgB6JVMRS4mwwXWq2s1ER21ld/exec";
 
 
     event.waitUntil(
