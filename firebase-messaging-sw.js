@@ -54,6 +54,68 @@ messaging.onBackgroundMessage(
     self.registration.showNotification(
       notificationTitle,
       notificationOptions
+
+    );
+
+  }
+);
+
+
+// =======================================================
+// CLIC SUR LA NOTIFICATION
+// =======================================================
+
+self.addEventListener(
+  "notificationclick",
+  function(event) {
+
+    event.notification.close();
+
+
+    const urlPunto =
+      "https://script.google.com/macros/s/AKfycbxm3XrvbyKNKSv0mN__fHVx_9-fK3awqJOTPq45EkS2SCyP4CX87lO31brEHNilH2do/exec";
+
+
+    event.waitUntil(
+
+      clients.matchAll({
+        type: "window",
+        includeUncontrolled: true
+      })
+
+      .then(function(clientList) {
+
+        // Si Punto est déjà ouvert,
+        // on le met simplement au premier plan
+        for (const client of clientList) {
+
+          if (
+            client.url.startsWith(
+              "https://script.google.com/macros/s/"
+            ) &&
+            "focus" in client
+          ) {
+
+            return client.focus();
+
+          }
+
+        }
+
+
+        // Sinon, on ouvre Punto
+        if (
+          clients.openWindow
+        ) {
+
+          return clients.openWindow(
+            urlPunto
+          );
+
+        }
+
+      })
+
     );
 
   }
